@@ -1,6 +1,4 @@
-const table = document.createElement("table");
 const tbody = document.createElement("tbody");
-const secondRow = document.createElement("tr");
 
 const createTitle = () => {
   const thead = document.createElement("thead");
@@ -10,10 +8,10 @@ const createTitle = () => {
   firstCell.textContent = "Emplyee";
   firstRow.append(firstCell);
   thead.append(firstRow);
-  table.append(thead);
+  return thead;
 };
-const fillingTable = () => {};
 const createHeaderRow = (data) => {
+  const secondRow = document.createElement("tr");
   const keys = Object.keys(data[0]);
 
   for (let i = 0; i < keys.length; i++) {
@@ -22,6 +20,7 @@ const createHeaderRow = (data) => {
     secondRow.append(td);
   }
   tbody.append(secondRow);
+  return tbody;
 };
 
 const fillTable = (data) => {
@@ -44,15 +43,16 @@ const fillTable = (data) => {
   for (let i = 0; i < trs.length; i++) {
     tbody.append(trs[i]);
   }
-  table.append(tbody);
-  document.body.append(table);
+  return tbody;
 };
 fetch("http://localhost:5249/employee")
   .then((response) => {
     return response.json();
   })
   .then((data) => {
-    createTitle();
+    const table = document.createElement("table");
+    table.append(createTitle());
     createHeaderRow(data);
-    fillTable(data);
+    table.append(fillTable(data));
+    document.body.append(table);
   });
