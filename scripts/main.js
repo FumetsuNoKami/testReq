@@ -25,16 +25,18 @@ const createHeaderRow = (data) => {
 
 const fillTable = (data) => {
   const keys = Object.keys(data[0]);
-
   const trs = [];
   for (let i = 0; i < data.length; i++) {
     const tr = document.createElement("tr");
     for (let j = 0; j < Object.keys(data[0]).length; j++) {
       const td = document.createElement("td");
-      if (typeof data[i][keys[j]] !== "object") {
-        td.textContent = data[i][keys[j]];
-      } else {
+      if (keys[j] === "dateBirth") {
+        const buf = data[i][keys[j]];
+        td.textContent = buf.slice(0, buf.indexOf("T"));
+      } else if (keys[j] === "department") {
         td.textContent = data[i][keys[j]].name;
+      } else {
+        td.textContent = data[i][keys[j]];
       }
       tr.append(td);
     }
