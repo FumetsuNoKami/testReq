@@ -1,12 +1,36 @@
-table {
-  margin: auto;
-  border-collapse: collapse;
-  border-spacing: 0px;
+body {
+  display: flex;
+  justify-content: center;
 }
-table,
-th,
-td {
+
+table {
+  align-items: center;
+  margin-bottom: 20px;
+  border: 5px solid #fff;
+  border-bottom-width: 3px;
+  border-collapse: collapse;
+  outline: 3px solid #ffd300;
+  font-size: 15px;
+  background: #fff !important;
+}
+th {
   text-align: center;
-  padding: 15px;
-  border: 1px solid black;
+  font-weight: bold;
+  padding: 7px;
+  background: #ffd300;
+  border: none;
+  font-size: 15px;
+  border-top: 3px solid #fff;
+  border-bottom: 3px solid #ffd300;
+}
+table td {
+  text-align: center;
+  padding: 7px;
+  border: none;
+  border-top: 3px solid #fff;
+  border-bottom: 3px solid #fff;
+  font-size: 15px;
+}
+table tbody tr:nth-child(even) {
+  background: #f8f8f8 !important;
 }
