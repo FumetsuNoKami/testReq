@@ -18,5 +18,6 @@ fetch("http://localhost:5249/employee")
 document
   .getElementsByClassName("redirectBtn")[0]
   .addEventListener("click", () => {
-    window.location.href = "https://fumetsunokami.github.io/testReq/directors";
+    window.location.href =
+      "https://fumetsunokami.github.io/testReq/tables/directors";
   });
