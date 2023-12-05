@@ -1,6 +1,5 @@
 const tbody = document.createElement("tbody");
-
-const createTitle = () => {
+export const createEmployeeTitle = () => {
   const thead = document.createElement("thead");
   const firstRow = document.createElement("tr");
   const firstCell = document.createElement("th");
@@ -10,7 +9,17 @@ const createTitle = () => {
   thead.append(firstRow);
   return thead;
 };
-const createHeaderRow = (data) => {
+export const createDirectorsTitle = () => {
+  const thead = document.createElement("thead");
+  const firstRow = document.createElement("tr");
+  const firstCell = document.createElement("th");
+  firstCell.setAttribute("colspan", "9");
+  firstCell.textContent = "Directors";
+  firstRow.append(firstCell);
+  thead.append(firstRow);
+  return thead;
+};
+export const createHeaderRow = (data) => {
   const secondRow = document.createElement("tr");
   const keys = Object.keys(data[0]);
 
@@ -23,7 +32,7 @@ const createHeaderRow = (data) => {
   return tbody;
 };
 
-const fillTable = (data) => {
+export const fillTable = (data) => {
   const keys = Object.keys(data[0]);
   const trs = [];
   for (let i = 0; i < data.length; i++) {
@@ -47,14 +56,3 @@ const fillTable = (data) => {
   }
   return tbody;
 };
-fetch("http://localhost:5249/employee")
-  .then((response) => {
-    return response.json();
-  })
-  .then((data) => {
-    const table = document.createElement("table");
-    table.append(createTitle());
-    createHeaderRow(data);
-    table.append(fillTable(data));
-    document.body.append(table);
-  });
