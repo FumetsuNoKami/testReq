@@ -30,9 +30,24 @@ postBtn.addEventListener("click", async () => {
   overlay.style.display = "none";
 });
 
+modal.addEventListener("keydown", (e) => {
+  if (e.code === "Escape") {
+    modal.style.display = "none";
+    overlay.style.display = "none";
+  }
+});
+window.addEventListener("click", (e) => {
+  const targetElem = e.target;
+  if (targetElem.classList.contains("overlay")) {
+    modal.style.display = "none";
+    overlay.style.display = "none";
+  }
+});
+
 const showBtn = document.getElementsByClassName("showModal")[0];
 const overlay = document.getElementsByClassName("overlay")[0];
 showBtn.addEventListener("click", () => {
   modal.style.display = "flex";
   overlay.style.display = "block";
+  postBtn.focus();
 });
