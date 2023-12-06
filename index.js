@@ -12,3 +12,9 @@ redirBtns[1].addEventListener(
     (window.location.href =
       "https://fumetsunokami.github.io/testReq/tables/directors"),
 );
+redirBtns[2].addEventListener(
+  "click",
+  () =>
+    (window.location.href =
+      "https://fumetsunokami.github.io/testReq/Auth/Login"),
+);
