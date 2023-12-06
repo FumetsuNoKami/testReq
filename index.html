@@ -7,7 +7,8 @@
       content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
     />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <script src="index.js" defer></script>
+    <script src="index.js" type="module"></script>
+    <script src="scripts/testPOST.js" type="module"></script>
     <link rel="stylesheet" href="css/style.css" />
     <title>Document</title>
   </head>
@@ -24,5 +25,45 @@
         <button class="redirectBtn" disabled>Login</button>
       </div>
     </div>
+    <button class="showModal">SHOW</button>
+    <div class="modal">
+      <div class="topText">Enter Employer data</div>
+      <div class="modalInputs">
+        <label class="inputLabel">
+          ID
+          <input type="number" />
+        </label>
+        <label class="inputLabel">
+          Full Name
+          <input type="text" />
+        </label>
+        <label class="inputLabel">
+          Passport
+          <input type="text" />
+        </label>
+        <label class="inputLabel">
+          Birth Date
+          <input type="text" />
+        </label>
+        <label class="inputLabel">
+          Post
+          <input type="text" />
+        </label>
+        <label class="inputLabel">
+          Education
+          <input type="text" />
+        </label>
+        <label class="inputLabel">
+          Payday
+          <input type="number" />
+        </label>
+        <label class="inputLabel">
+          Department ID
+          <input type="number" />
+        </label>
+      </div>
+      <button class="postBtn">POST</button>
+    </div>
+    <div class="overlay" id="overlay" style="display: none"></div>
   </body>
 </html>
