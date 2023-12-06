@@ -1,18 +1,20 @@
 const url = "http://localhost:5249/employee";
-const data = {
-  id: 100,
-  fullName: "Борис Борисович Борисов",
-  passport: "7022 983300",
-  dateBirth: "1899-01-10",
-  post: "Норм чел",
-  education: "Низшее",
-  payday: 555555,
-  idDepartment: 1,
-};
 const modal = document.getElementsByClassName("modal")[0];
 const postBtn = document.getElementsByClassName("postBtn")[0];
 postBtn.addEventListener("click", async () => {
   try {
+    const inputs = document.querySelectorAll("input");
+    const data = {
+      id: inputs[0].value,
+      fullName: inputs[1].value,
+      passport: inputs[2].value,
+      dateBirth: inputs[3].value,
+      post: inputs[4].value,
+      education: inputs[5].value,
+      payday: inputs[6].value,
+      idDepartment: inputs[7].value,
+    };
+    console.log(data);
     const response = await fetch(url, {
       method: "POST",
       body: JSON.stringify(data),
