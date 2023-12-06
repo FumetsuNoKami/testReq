@@ -16,7 +16,7 @@ fetch("http://localhost:5249/employee")
     document.body.append(table);
   });
 document
-  .getElementsByClassName("redirectBtn")[0]
+  .getElementsByClassName("redirectBtn")[1]
   .addEventListener("click", () => {
     window.location.href =
       "https://fumetsunokami.github.io/testReq/tables/directors";
