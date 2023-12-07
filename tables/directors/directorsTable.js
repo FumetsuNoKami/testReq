@@ -1,23 +1,23 @@
 import {
-  createHeaderRow,
-  createDirectorsTitle,
-  fillTable,
+  modalInteractions,
+  redirectBtns,
+  createTable,
 } from "../../scripts/main.js";
-
-fetch("http://localhost:5249/directors")
+const tableName = document.title.slice(0, document.title.indexOf(" "));
+const modal = document.getElementsByClassName("modal")[0];
+fetch(`http://localhost:5249/${tableName}`)
   .then((response) => {
     return response.json();
   })
   .then((data) => {
-    const table = document.createElement("table");
-    table.append(createDirectorsTitle());
-    createHeaderRow(data);
-    table.append(fillTable(data));
-    document.body.append(table);
+    const keys = Object.keys(data[0]);
+    const testObj = {};
+
+    testObj[keys[0]] = "1";
+    testObj[keys[1]] = "1";
+    testObj[keys[2]] = "1";
+    testObj[keys[3]] = "1";
+    createTable(tableName, data, modal);
   });
-document
-  .getElementsByClassName("redirectBtn")[0]
-  .addEventListener("click", () => {
-    window.location.href =
-      "https://fumetsunokami.github.io/testReq/tables/employee";
-  });
+redirectBtns();
+modalInteractions(modal);

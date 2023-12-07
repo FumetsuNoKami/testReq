@@ -9,6 +9,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <link rel="stylesheet" href="../../css/style.css" />
     <script src="directorsTable.js" type="module"></script>
+    <!--<script src="../../scripts/testPOST.js" type="module"></script>-->
+
     <title>Directors Table</title>
   </head>
   <body>
@@ -19,10 +21,17 @@
         </button>
       </div>
       <div class="navItems">
+        <button class="showAddModal">SHOW</button>
         <button class="redirectBtn">To Employee</button>
         <button class="redirectBtn" disabled>To Directors</button>
         <button class="redirectBtn" disabled>Login</button>
       </div>
     </div>
+
+    <div class="modal">
+      <div class="topText">Enter Employer data</div>
+      <div class="modalInputs"></div>
+    </div>
+    <div class="overlay" id="overlay" style="display: none"></div>
   </body>
 </html>

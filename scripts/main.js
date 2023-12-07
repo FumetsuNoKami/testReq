@@ -1,20 +1,15 @@
 const tbody = document.createElement("tbody");
-export const createEmployeeTitle = () => {
-  const thead = document.createElement("thead");
-  const firstRow = document.createElement("tr");
-  const firstCell = document.createElement("th");
-  firstCell.setAttribute("colspan", "9");
-  firstCell.textContent = "Emplyee";
-  firstRow.append(firstCell);
-  thead.append(firstRow);
-  return thead;
+
+export const addBtnName = (tableName) => {
+  const addBtn = document.getElementsByClassName("showAddModal")[0];
+  addBtn.textContent = "Add new " + tableName;
 };
-export const createDirectorsTitle = () => {
+export const createTitle = (tableName) => {
   const thead = document.createElement("thead");
   const firstRow = document.createElement("tr");
   const firstCell = document.createElement("th");
   firstCell.setAttribute("colspan", "9");
-  firstCell.textContent = "Directors";
+  firstCell.textContent = tableName;
   firstRow.append(firstCell);
   thead.append(firstRow);
   return thead;
@@ -55,4 +50,102 @@ export const fillTable = (data) => {
     tbody.append(trs[i]);
   }
   return tbody;
+};
+
+export const createModalInputs = (modal, data) => {
+  const modalInputs = modal.getElementsByClassName("modalInputs")[0];
+  const tableColNames = Object.keys(data[0]);
+  for (let i = 0; i < tableColNames.length; i++) {
+    if (tableColNames[i] === "department") continue;
+    const label = document.createElement("label");
+    const input = document.createElement("input");
+    label.textContent = tableColNames[i];
+    label.classList.add("inputLabel");
+    label.append(input);
+    modalInputs.append(label);
+  }
+  const postBtn = document.createElement("button");
+  postBtn.classList.add("postBtn");
+  postBtn.textContent = "POST";
+  modal.append(postBtn);
+};
+export const postDataBtn = (postBtn, data, modal, tableName) => {
+  postBtn.addEventListener("click", async () => {
+    try {
+      const inputs = document.querySelectorAll("input");
+      const postData = {};
+      const keys = Object.keys(data[0]);
+      let j = 0;
+      for (let i = 0; i < keys.length; i++) {
+        console.log(inputs[j]);
+        if (keys[i] === "department") {
+          continue;
+        }
+        console.log(keys[i]);
+        postData[keys[i]] = inputs[j].value;
+        j++;
+      }
+      console.log(postData);
+      const response = await fetch(`http://localhost:5249/${tableName}`, {
+        method: "POST",
+        body: JSON.stringify(postData),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const json = await response.json();
+      console.log(json);
+      console.log("Успех:", JSON.stringify(json));
+    } catch (error) {
+      console.error("Ошибка:", error);
+    }
+    modal.style.display = "none";
+  });
+};
+export const redirectBtns = () => {
+  document
+    .getElementsByClassName("redirectBtn")[0]
+    .addEventListener("click", () => {
+      window.location.href = `https://fumetsunokami.github.io/testReq/tables/employee`;
+    });
+  document
+    .getElementsByClassName("redirectBtn")[1]
+    .addEventListener("click", () => {
+      window.location.href =
+        "https://fumetsunokami.github.io/testReq/tables/directors";
+    });
+};
+
+export const createTable = (tableName, data, modal) => {
+  addBtnName(tableName);
+  createModalInputs(modal, data);
+  const postData = document.getElementsByClassName("postBtn")[0];
+  postDataBtn(postData, data, modal, tableName);
+  const table = document.createElement("table");
+  table.append(createTitle(tableName));
+  createHeaderRow(data);
+  table.append(fillTable(data));
+  document.body.append(table);
+};
+export const modalInteractions = (modal) => {
+  modal.addEventListener("keydown", (e) => {
+    if (e.code === "Escape") {
+      modal.style.display = "none";
+      overlay.style.display = "none";
+    }
+  });
+  window.addEventListener("click", (e) => {
+    const targetElem = e.target;
+    if (targetElem.classList.contains("overlay")) {
+      modal.style.display = "none";
+      overlay.style.display = "none";
+    }
+  });
+
+  const showBtn = document.getElementsByClassName("showAddModal")[0];
+  const overlay = document.getElementsByClassName("overlay")[0];
+  showBtn.addEventListener("click", () => {
+    modal.style.display = "flex";
+    overlay.style.display = "block";
+  });
 };
