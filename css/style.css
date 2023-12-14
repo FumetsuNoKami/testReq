@@ -7,6 +7,9 @@ body {
   flex-direction: column;
   justify-content: center;
 }
+.table {
+  width: 100%;
+}
 .navBar {
   background: #250048;
   padding: max(2vh, 1vw);
@@ -21,6 +24,7 @@ body {
   gap: 3vw;
 }
 table {
+  width: 100%;
   align-items: center;
   margin-bottom: 20px;
   border: 5px solid #fff;
@@ -117,8 +121,6 @@ tr:nth-child(even):hover {
   display: flex;
   flex-direction: column;
 }
-input {
-}
 .inputLabel {
   font-size: 18px;
   width: 90%;
@@ -126,6 +128,7 @@ input {
   flex-direction: column;
   margin: 10px;
 }
+
 .postBtn {
   width: 90%;
   background: #250048;
@@ -147,7 +150,6 @@ input {
 }
 .updBtn {
   font-size: 18px;
-
   width: 90%;
   background: #250048;
   border: none;

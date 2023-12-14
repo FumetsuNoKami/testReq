@@ -36,7 +36,7 @@ export const fillTable = (data, tableName) => {
 
   for (let i = 0; i < data.length; i++) {
     const tr = document.createElement("tr");
-    modalOpen(modal, tr, tableName);
+    modalOpen(modal, tr, tableName, data);
 
     for (let j = 0; j < Object.keys(data[0]).length; j++) {
       const td = document.createElement("td");
@@ -123,6 +123,18 @@ export const redirectBtns = () => {
     });
 };
 
+const deleteRow = (currentRow, tableName, modal, overlay) => {
+  const targetID = currentRow.firstChild.textContent;
+  fetch(`http://localhost:5249/${tableName}/${targetID}`, {
+    method: "DELETE",
+  })
+    .then((res) => res.json())
+    .then((res) => console.log(res))
+    .then(currentRow.remove());
+  modal.style.display = "none";
+  overlay.style.display = "none";
+};
+
 export const createTable = (tableName, data, modal) => {
   addBtnName(tableName);
   createModalInputs(modal, data);
@@ -132,25 +144,60 @@ export const createTable = (tableName, data, modal) => {
   table.append(createTitle(tableName));
   createHeaderRow(data);
   table.append(fillTable(data, tableName));
-  document.body.append(table);
+  const tablePlace = document.getElementsByClassName("table")[0];
+  tablePlace.append(table);
 };
-export const modalOpen = (modal, target, tableName) => {
+
+const updBtnEvent = (modal, currentRow, data) => {
+  const modalUpdate = document.getElementsByClassName("modal")[2];
+  modalUpdate.style.display = "flex";
+  modal.style.display = "none";
+  const inputs = modalUpdate.getElementsByClassName("modalInputs")[0];
+  const len = inputs.children.length;
+  if (len) modalUpdate.getElementsByClassName("updBtn")[0].remove();
+  for (let i = 0; i < len; i++) {
+    inputs.children[0].remove();
+  }
+  const labels = Object.keys(data[0]);
+  for (let i = 0; i < currentRow.children.length; i++) {
+    const newInput = document.createElement("input");
+    const newLabel = document.createElement("label");
+    newLabel.textContent = labels[i];
+    newLabel.classList.add("inputLabel");
+    newInput.value = currentRow.children[i].textContent;
+    newLabel.append(newInput);
+    inputs.append(newLabel);
+  }
+  const updateBtn = document.createElement("button");
+  updateBtn.textContent = "Update";
+  updateBtn.classList.add("updBtn");
+  modalUpdate.append(updateBtn);
+  modalHide(modalUpdate);
+};
+
+export const modalOpen = (modal, target, tableName, data) => {
   const overlay = document.getElementsByClassName("overlay")[0];
   target.addEventListener("click", (e) => {
     if (e.currentTarget.classList.length === 0) {
-      const curentRow = e.currentTarget;
-      const deleteBtn = document.getElementsByClassName("deleteBtn")[0];
-      const updateBtn = document.getElementsByClassName("updBtn")[0];
-      deleteBtn.addEventListener("click", () => {
-        const targetID = curentRow.firstChild.textContent;
-        fetch(`http://localhost:5249/${tableName}/${targetID}`, {
-          method: "DELETE",
-        })
-          .then((res) => res.text()) // or res.json()
-          .then((res) => console.log(res))
-          .then(curentRow.remove());
+      const currentRow = e.currentTarget;
+      const newDeleteBtn = document.createElement("button");
+      newDeleteBtn.classList.add("deleteBtn");
+      newDeleteBtn.textContent = "Delete";
+      const newUpdBtn = document.createElement("button");
+      newUpdBtn.classList.add("updBtn");
+      newUpdBtn.textContent = "Update";
+      modal.append(newUpdBtn);
+      modal.append(newDeleteBtn);
+      newDeleteBtn.addEventListener("click", () => {
+        deleteRow(currentRow, tableName, modal, overlay);
+        newDeleteBtn.remove();
+        newUpdBtn.remove();
       });
-      updateBtn.addEventListener("click", () => console.log("ok"));
+      newUpdBtn.addEventListener("click", () => {
+        updBtnEvent(modal, currentRow, data);
+        newUpdBtn.remove();
+        newDeleteBtn.remove();
+      });
     }
     modal.style.display = "flex";
     overlay.style.display = "block";
@@ -173,4 +220,21 @@ export const modalHide = (modal) => {
       overlay.style.display = "none";
     }
   });
+};
+
+export const showTable = () => {
+  const tableName = document.title.slice(0, document.title.indexOf(" "));
+  const modalAdd = document.getElementsByClassName("modal")[0];
+  const showAdd = document.getElementsByClassName("showAddModal")[0];
+
+  fetch(`http://localhost:5249/${tableName}`)
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      createTable(tableName, data, modalAdd);
+    });
+  modalOpen(modalAdd, showAdd, tableName);
+  modalHide(modalAdd);
+  redirectBtns();
 };
