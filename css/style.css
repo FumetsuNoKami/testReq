@@ -46,8 +46,17 @@ table td {
   padding: 10px 7px 7px;
   font-size: 15px;
 }
+tr:not(tr:nth-child(1)) {
+  cursor: pointer;
+}
+tr:not(tr:nth-child(1)):hover {
+  background: #9898e0;
+}
 table tbody tr:nth-child(even) {
-  background: #f8f8f8 !important;
+  background: rgb(236, 235, 235);
+}
+tr:nth-child(even):hover {
+  background: #9898e0;
 }
 
 .showAddModal {
@@ -126,8 +135,37 @@ input {
   padding: 10px;
   margin: 5%;
 }
+.deleteBtn {
+  font-size: 18px;
+  width: 90%;
+  background: #250048;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 10px;
+  margin: 5%;
+}
+.updBtn {
+  font-size: 18px;
+
+  width: 90%;
+  background: #250048;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 10px;
+  margin: 5%;
+}
 .postBtn:hover {
   filter: invert(1);
+}
+.updBtn:hover {
+  background: #99ec99;
+  color: black;
+}
+.deleteBtn:hover {
+  background: #f56464;
+  color: black;
 }
 .overlay {
   position: fixed;

@@ -27,11 +27,17 @@ export const createHeaderRow = (data) => {
   return tbody;
 };
 
-export const fillTable = (data) => {
+const rowActionChoose = () => {};
+
+export const fillTable = (data, tableName) => {
+  const modal = document.getElementsByClassName("modal")[1];
   const keys = Object.keys(data[0]);
   const trs = [];
+
   for (let i = 0; i < data.length; i++) {
     const tr = document.createElement("tr");
+    modalOpen(modal, tr, tableName);
+
     for (let j = 0; j < Object.keys(data[0]).length; j++) {
       const td = document.createElement("td");
       if (keys[j] === "dateBirth") {
@@ -49,6 +55,7 @@ export const fillTable = (data) => {
   for (let i = 0; i < trs.length; i++) {
     tbody.append(trs[i]);
   }
+  modalHide(modal);
   return tbody;
 };
 
@@ -124,10 +131,35 @@ export const createTable = (tableName, data, modal) => {
   const table = document.createElement("table");
   table.append(createTitle(tableName));
   createHeaderRow(data);
-  table.append(fillTable(data));
+  table.append(fillTable(data, tableName));
   document.body.append(table);
 };
-export const modalInteractions = (modal) => {
+export const modalOpen = (modal, target, tableName) => {
+  const overlay = document.getElementsByClassName("overlay")[0];
+  target.addEventListener("click", (e) => {
+    if (e.currentTarget.classList.length === 0) {
+      const curentRow = e.currentTarget;
+      const deleteBtn = document.getElementsByClassName("deleteBtn")[0];
+      const updateBtn = document.getElementsByClassName("updBtn")[0];
+      deleteBtn.addEventListener("click", () => {
+        const targetID = curentRow.firstChild.textContent;
+        fetch(`http://localhost:5249/${tableName}/${targetID}`, {
+          method: "DELETE",
+        })
+          .then((res) => res.text()) // or res.json()
+          .then((res) => console.log(res))
+          .then(curentRow.remove());
+      });
+      updateBtn.addEventListener("click", () => console.log("ok"));
+    }
+    modal.style.display = "flex";
+    overlay.style.display = "block";
+  });
+};
+
+export const modalHide = (modal) => {
+  const overlay = document.getElementsByClassName("overlay")[0];
+
   modal.addEventListener("keydown", (e) => {
     if (e.code === "Escape") {
       modal.style.display = "none";
@@ -140,12 +172,5 @@ export const modalInteractions = (modal) => {
       modal.style.display = "none";
       overlay.style.display = "none";
     }
-  });
-
-  const showBtn = document.getElementsByClassName("showAddModal")[0];
-  const overlay = document.getElementsByClassName("overlay")[0];
-  showBtn.addEventListener("click", () => {
-    modal.style.display = "flex";
-    overlay.style.display = "block";
   });
 };
