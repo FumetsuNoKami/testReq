@@ -145,8 +145,9 @@ export const createTable = (tableName, data, modal) => {
   tablePlace.append(table);
 };
 
-const updBtnEvent = (modal, currentRow, data) => {
+const updBtnEvent = (modal, currentRow, data, overlay, tableName) => {
   const modalUpdate = document.getElementsByClassName("modal")[2];
+
   modalUpdate.style.display = "flex";
   modal.style.display = "none";
   const inputs = modalUpdate.getElementsByClassName("modalInputs")[0];
@@ -167,7 +168,26 @@ const updBtnEvent = (modal, currentRow, data) => {
   const updateBtn = document.createElement("button");
   updateBtn.textContent = "Update";
   updateBtn.classList.add("updBtn");
+  updateBtn.addEventListener("click", () => {
+    const updData = {};
+    const keys = Object.keys(data[0]);
+    for (let i = 0; i < inputs.children.length; i++) {
+      updData[keys[i]] = inputs.children[i].children[0].value;
+      currentRow.children[i].textContent = inputs.children[i].children[0].value;
+    }
+    console.log(updData);
+    const targetID = currentRow.firstChild.textContent;
+    fetch(`http://localhost:5249/${tableName}/${targetID}`, {
+      method: "UPDATE",
+    })
+      .then((res) => res.json())
+      .then((res) => console.log(res));
+    modalUpdate.style.display = "none";
+    overlay.style.display = "none";
+  });
+
   modalUpdate.append(updateBtn);
+
   modalHide(modalUpdate);
 };
 
@@ -196,7 +216,7 @@ export const modalOpen = (modal, target, tableName, data) => {
         deleteRow(currentRow, tableName, modal, overlay);
       });
       newUpdBtn.addEventListener("click", () => {
-        updBtnEvent(modal, currentRow, data);
+        updBtnEvent(modal, currentRow, data, overlay, tableName);
       });
     }
     modal.style.display = "flex";
