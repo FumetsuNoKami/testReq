@@ -84,11 +84,9 @@ export const postDataBtn = (postBtn, data, modal, tableName) => {
       const keys = Object.keys(data[0]);
       let j = 0;
       for (let i = 0; i < keys.length; i++) {
-        console.log(inputs[j]);
         if (keys[i] === "department") {
           continue;
         }
-        console.log(keys[i]);
         postData[keys[i]] = inputs[j].value;
         j++;
       }
@@ -101,7 +99,6 @@ export const postDataBtn = (postBtn, data, modal, tableName) => {
         },
       });
       const json = await response.json();
-      console.log(json);
       console.log("Успех:", JSON.stringify(json));
     } catch (error) {
       console.error("Ошибка:", error);
@@ -154,7 +151,6 @@ const updBtnEvent = (modal, currentRow, data) => {
   modal.style.display = "none";
   const inputs = modalUpdate.getElementsByClassName("modalInputs")[0];
   const len = inputs.children.length;
-  if (len) modalUpdate.getElementsByClassName("updBtn")[0].remove();
   for (let i = 0; i < len; i++) {
     inputs.children[0].remove();
   }
@@ -178,6 +174,14 @@ const updBtnEvent = (modal, currentRow, data) => {
 export const modalOpen = (modal, target, tableName, data) => {
   const overlay = document.getElementsByClassName("overlay")[0];
   target.addEventListener("click", (e) => {
+    const btnsDel = document.getElementsByClassName("deleteBtn");
+    const btnsUpd = document.getElementsByClassName("updBtn");
+    while (btnsDel.length > 0) {
+      btnsDel[btnsDel.length - 1].remove();
+    }
+    while (btnsUpd.length > 0) {
+      btnsUpd[btnsUpd.length - 1].remove();
+    }
     if (e.currentTarget.classList.length === 0) {
       const currentRow = e.currentTarget;
       const newDeleteBtn = document.createElement("button");
@@ -190,13 +194,9 @@ export const modalOpen = (modal, target, tableName, data) => {
       modal.append(newDeleteBtn);
       newDeleteBtn.addEventListener("click", () => {
         deleteRow(currentRow, tableName, modal, overlay);
-        newDeleteBtn.remove();
-        newUpdBtn.remove();
       });
       newUpdBtn.addEventListener("click", () => {
         updBtnEvent(modal, currentRow, data);
-        newUpdBtn.remove();
-        newDeleteBtn.remove();
       });
     }
     modal.style.display = "flex";
